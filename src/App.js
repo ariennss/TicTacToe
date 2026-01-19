@@ -31,13 +31,22 @@ export default function Game() {
     );
   });
 
+  function restartGame() {
+    setHistory([Array(9).fill(null)]);
+    setCurrentMove(0);
+  }
+
   return (
     <div className="game">
-      <div className="game-board">
-        <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
-      </div>
-      <div className="game-info">
-        <ol>{moves}</ol>
+      <h1>Tic Tac Toe</h1>
+      <div className="game-content">
+        <div className="game-board">
+          <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
+          <button className="restart-button" onClick={restartGame}>Restart game</button>
+        </div>
+        <div className="game-info">
+          <ol>{moves}</ol>
+        </div>
       </div>
     </div>
   );
@@ -49,7 +58,7 @@ function Board({ xIsNext, squares, onPlay }) {
   if (winner) {
     status = "Winner is " + winner;
   } else {
-    status = "Next player is " + (xIsNext ? "O" : "X");
+    status = "Current player is " + (xIsNext ? "O" : "X");
   }
 
   function handleClick(index) {
@@ -70,7 +79,7 @@ function Board({ xIsNext, squares, onPlay }) {
 
   return (
     <>
-      <div>{status}</div>
+      <div className="turn">{status}</div>
       <div className="board-row">
         <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
         <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
@@ -95,7 +104,7 @@ function Board({ xIsNext, squares, onPlay }) {
 function Square({ value, onSquareClick }) {
   return (
     <button className="square" onClick={onSquareClick}>
-      {value}
+      <span className={value ? value.toLowerCase() : ""}>{value}</span>
     </button>
   );
 }
